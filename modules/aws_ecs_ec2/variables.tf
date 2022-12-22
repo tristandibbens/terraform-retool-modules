@@ -91,11 +91,11 @@ variable "rds_username" {
   description = "Master username for the RDS instance. Defaults to Retool."
 }
 
-# variable "rds_instance_class" {
-#   type        = string
-#   default     = "db.m4.large"
-#   description = "Instance class for RDS. Defaults to `db.m4.large`"
-# }
+variable "rds_instance_class" {
+  type        = string
+  default     = "db.t3.medium"
+  description = "Instance class for RDS. Defaults to `db.m4.large`"
+}
 
 variable "rds_publicly_accessible" {
   type        = bool
