@@ -10,6 +10,7 @@ resource "aws_rds_cluster" "this" {
   replica_count         = 0
   subnets             = var.subnet_ids
   vpc_id              = var.vpc_id
+  vpc_security_group_ids       = [aws_security_group.rds.id]
   monitoring_interval = 60
   skip_final_snapshot = true
   storage_encrypted   = true
