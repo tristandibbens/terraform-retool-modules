@@ -4,7 +4,7 @@ resource "aws_rds_cluster" "this" {
   master_username       = aws_secretsmanager_secret_version.rds_username.secret_string
   master_password       = aws_secretsmanager_secret_version.rds_password.secret_string
   engine                = "aurora-postgresql"
-  engine_verions        = "13.6"
+  engine_version        = "13.6"
   engine_mode           = "serverless"
   vpc_security_group_ids       = [aws_security_group.rds.id]
   skip_final_snapshot = true
