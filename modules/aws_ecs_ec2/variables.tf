@@ -28,7 +28,7 @@ variable "ssh_key_name" {
 variable "instance_type" {
   type        = string
   description = "ECS cluster instance type. Defaults to `t2.large`"
-  default     = "t2.medium"
+  default     = "t3.large"
 }
 
 variable "max_instance_count" {
