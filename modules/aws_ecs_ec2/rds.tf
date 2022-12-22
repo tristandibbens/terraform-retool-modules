@@ -6,7 +6,6 @@ resource "aws_rds_cluster" "this" {
   engine                = "aurora-postgresql"
   engine_verions        = "13.6"
   engine_mode           = "serverless"
-  vpc_id              = var.vpc_id
   vpc_security_group_ids       = [aws_security_group.rds.id]
   skip_final_snapshot = true
   storage_encrypted   = true
