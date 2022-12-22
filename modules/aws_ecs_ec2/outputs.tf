@@ -29,7 +29,7 @@ output "rds_instance_id" {
 }
 
 output "rds_instance_address" {
-  value       = aws_db_instance.this.endpoint
+  value       = aws_db_instance.this.address
   description = "Hostname of the RDS instance"
 }
 
