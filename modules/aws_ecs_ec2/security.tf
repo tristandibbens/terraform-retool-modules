@@ -3,12 +3,20 @@ resource "aws_security_group" "rds" {
   description = "Retool database security group"
   vpc_id      = var.vpc_id
   
+  # ingress {
+  #   description = "Retool ECS Postgres Inbound"
+  #   from_port   = "5432"
+  #   to_port     = "5432"
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
+
   ingress {
     description = "Retool ECS Postgres Inbound"
     from_port   = "5432"
     to_port     = "5432"
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    source_security_group_id = aws_security_group.ec2.id
   }
 
   # Allow all outbound - modify if necessary
@@ -21,6 +29,7 @@ resource "aws_security_group" "rds" {
     ]
     ipv6_cidr_blocks = ["::/0"]
   }
+
 }
 
 resource "aws_security_group" "alb" {
