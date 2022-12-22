@@ -148,7 +148,7 @@ resource "aws_db_instance" "this" {
   instance_class               = var.rds_instance_class
   engine                       = "postgres"
   engine_version               = "10.6"
-  name                         = "hammerhead_production"
+  db_name                         = "hammerhead_production"
   username                     = aws_secretsmanager_secret_version.rds_username.secret_string
   password                     = aws_secretsmanager_secret_version.rds_password.secret_string
   port                         = 5432
