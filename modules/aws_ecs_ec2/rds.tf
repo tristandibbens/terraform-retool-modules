@@ -1,5 +1,5 @@
 resource "aws_rds_cluster" "this" {
-  cluster_identifier    = "${var.deployment_name}-rds-instance"
+  cluster_identifier    = var.deployment_name
   database_name         = "hammerhead_production"
   master_username       = aws_secretsmanager_secret_version.rds_username.secret_string
   master_password       = aws_secretsmanager_secret_version.rds_password.secret_string
