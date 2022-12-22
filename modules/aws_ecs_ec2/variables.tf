@@ -1,7 +1,7 @@
 variable "aws_region" {
   type        = string
-  default     = "us-east-1"
-  description = "AWS region. Defaults to `us-east-1`"
+  default     = "eu-west-2"
+  description = "AWS region. Defaults to `eu-west-2`"
 }
 
 variable "node_env" {
@@ -28,19 +28,19 @@ variable "ssh_key_name" {
 variable "instance_type" {
   type        = string
   description = "ECS cluster instance type. Defaults to `t2.large`"
-  default     = "t2.large"
+  default     = "t2.medium"
 }
 
 variable "max_instance_count" {
   type        = number
-  description = "Max number of EC2 instances. Defaults to 10."
-  default     = 10
+  description = "Max number of EC2 instances. Defaults to 2."
+  default     = 4
 }
 
 variable "min_instance_count" {
   type        = number
   description = "Min/desired number of EC2 instances. Defaults to 3."
-  default     = 3
+  default     = 2
 }
 
 variable "deployment_name" {
@@ -91,11 +91,11 @@ variable "rds_username" {
   description = "Master username for the RDS instance. Defaults to Retool."
 }
 
-variable "rds_instance_class" {
-  type        = string
-  default     = "db.m4.large"
-  description = "Instance class for RDS. Defaults to `db.m4.large`"
-}
+# variable "rds_instance_class" {
+#   type        = string
+#   default     = "db.m4.large"
+#   description = "Instance class for RDS. Defaults to `db.m4.large`"
+# }
 
 variable "rds_publicly_accessible" {
   type        = bool

@@ -16,7 +16,7 @@ locals {
       },
       {
         name  = "POSTGRES_HOST"
-        value = aws_db_instance.this.address
+        value = aws_rds_cluster.this.endpoint
       },
       {
         name  = "POSTGRES_SSL_ENABLED"
