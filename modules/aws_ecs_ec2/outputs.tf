@@ -24,16 +24,16 @@ output "ecs_cluster_id" {
 }
 
 output "rds_instance_id" {
-  value       = aws_rds_cluster.this.id
+  value       = aws_db_instance.this.id
   description = "ID of AWS RDS instance"
 }
 
 output "rds_instance_address" {
-  value       = aws_rds_cluster.this.endpoint
+  value       = aws_db_instance.this.endpoint
   description = "Hostname of the RDS instance"
 }
 
 output "rds_instance_arn" {
-  value       = aws_rds_cluster.this.arn
+  value       = aws_db_instance.this.arn
   description = "ARN of RDS instance"
 }
