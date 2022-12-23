@@ -53,8 +53,8 @@ resource "aws_lb_target_group" "this" {
   name                 = "${var.deployment_name}-target"
   vpc_id               = var.vpc_id
   deregistration_delay = 30
-  port                 = 443
-  protocol             = "HTTPS"
+  port                 = 3000
+  protocol             = "HTTP"
 
   health_check {
     path                = "/"

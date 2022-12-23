@@ -27,8 +27,8 @@ variable "ssh_key_name" {
 
 variable "instance_type" {
   type        = string
-  description = "ECS cluster instance type. Defaults to `t4g.medium`"
-  default     = "t4g.medium"
+  description = "ECS cluster instance type. Defaults to `t3.medium`"
+  default     = "t3.medium"
 }
 
 variable "max_instance_count" {
@@ -249,11 +249,11 @@ variable "alb_ingress_rules" {
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
     },
-        {
+    {
       description      = "Global HTTPS inbound"
       from_port        = "443"
       to_port          = "443"
-      protocol         = "HTTPS"
+      protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
     }
