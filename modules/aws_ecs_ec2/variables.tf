@@ -277,3 +277,15 @@ variable "alb_egress_rules" {
   ]
   description = "Egress rules for load balancer"
 }
+
+#ssl policy see here - https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-security-policy-table.html
+variable "alb_ssl_policy" {
+  type        = string
+  description = "ALB SSL Policy"
+  default     = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+}
+
+variable "https_certificate" {
+  type        = string
+  description = "ssl https certificate"
+}
