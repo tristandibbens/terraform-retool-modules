@@ -27,8 +27,8 @@ variable "ssh_key_name" {
 
 variable "instance_type" {
   type        = string
-  description = "ECS cluster instance type. Defaults to `t2.large`"
-  default     = "t3.large"
+  description = "ECS cluster instance type. Defaults to `t4g.medium`"
+  default     = "t4g.medium"
 }
 
 variable "max_instance_count" {
@@ -94,7 +94,7 @@ variable "rds_username" {
 variable "rds_instance_class" {
   type        = string
   default     = "db.t3.medium"
-  description = "Instance class for RDS. Defaults to `db.m4.large`"
+  description = "Instance class for RDS. Defaults to `db.t3.medium`"
 }
 
 variable "rds_publicly_accessible" {
