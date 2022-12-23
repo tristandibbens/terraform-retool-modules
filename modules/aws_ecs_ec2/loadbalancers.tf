@@ -11,7 +11,7 @@ resource "aws_lb_listener" "this" {
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = var.alb_ssl_policy
-  certificate_arn   = var.https_certificate
+  certificate_arn   = var.alb_certificate_arn
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.this.arn

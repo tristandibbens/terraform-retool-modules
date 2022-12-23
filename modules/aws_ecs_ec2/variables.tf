@@ -293,7 +293,7 @@ variable "alb_ssl_policy" {
   default     = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
 }
 
-variable "https_certificate" {
+variable "alb_certificate_arn" {
   type        = string
   description = "ssl https certificate"
 }
