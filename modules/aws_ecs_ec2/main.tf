@@ -215,8 +215,8 @@ resource "aws_ecs_task_definition" "retool_jobs_runner" {
         portMappings = [
           {
             containerPort = 3000
-            hostPort      = 80
-            protocol      = "tcp"
+            hostPort      = 443
+            protocol      = "HTTPS"
           }
         ]
 
@@ -260,8 +260,8 @@ resource "aws_ecs_task_definition" "retool" {
         portMappings = [
           {
             containerPort = 3000
-            hostPort      = 80
-            protocol      = "tcp"
+            hostPort      = 443
+            protocol      = "HTTPS"
           }
         ]
 
