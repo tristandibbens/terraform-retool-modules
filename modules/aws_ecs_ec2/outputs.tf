@@ -38,7 +38,7 @@ output "rds_instance_arn" {
   description = "ARN of RDS instance"
 }
 
-output "aws_security_group.ec2.id" {
+output "aws_security_group_ec2_id" {
   value       = aws_security_group.ec2.id
   description = "EC2 security group"
 }
