@@ -39,7 +39,7 @@ resource "aws_launch_configuration" "this" {
   name_prefix   = "${var.deployment_name}-ecs-launch-configuration-"
   image_id      = data.aws_ami.this.id
   instance_type = var.instance_type # e.g. t2.medium
-  spot_price    = "0.02"
+  #spot_price    = "0.02" #tried this but the ecs clustere didnt recognise these as containters??
   enable_monitoring           = true
   associate_public_ip_address = true
 
