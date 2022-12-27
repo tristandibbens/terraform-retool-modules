@@ -20,4 +20,5 @@ resource "aws_db_instance" "this" {
   
   skip_final_snapshot          = true
   apply_immediately            = true
+  deletion_protection = true
 }
