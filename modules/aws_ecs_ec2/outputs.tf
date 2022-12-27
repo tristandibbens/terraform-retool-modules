@@ -37,3 +37,8 @@ output "rds_instance_arn" {
   value       = aws_db_instance.this.arn
   description = "ARN of RDS instance"
 }
+
+output "aws_security_group.ec2.id" {
+  value       = aws_security_group.ec2.id
+  description = "EC2 security group"
+}
