@@ -36,6 +36,12 @@ variable "instance_type" {
   default     = "t3.medium"
 }
 
+variable "spot_required_cost" {
+  type        = number
+  description = "ECS spot cluster instance price required."
+  default     = 0.03
+}
+
 variable "max_instance_count" {
   type        = number
   description = "Max number of EC2 instances. Defaults to 4."
