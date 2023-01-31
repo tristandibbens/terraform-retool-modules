@@ -18,7 +18,9 @@ resource "aws_db_instance" "this" {
   vpc_security_group_ids       = [aws_security_group.rds.id]
   performance_insights_enabled = var.rds_performance_insights_enabled
   
+  backup_retention_period      = var.rds_backup_period
+
   skip_final_snapshot          = true
   apply_immediately            = true
-  deletion_protection = true
+  deletion_protection          = true
 }

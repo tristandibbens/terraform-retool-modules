@@ -308,3 +308,10 @@ variable "alb_certificate_arn" {
   type        = string
   description = "ssl https certificate"
 }
+
+variable "rds_backup_period" {
+  type        = number
+  description = "backup retention period for snapshot"
+  default     = 0
+}
+
