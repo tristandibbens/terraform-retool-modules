@@ -29,6 +29,7 @@ resource "aws_security_group" "rds" {
     ]
     ipv6_cidr_blocks = ["::/0"]
   }
+  tags = {project=var.project}
 
 }
 
@@ -61,6 +62,7 @@ resource "aws_security_group" "alb" {
       ipv6_cidr_blocks = egress.value["ipv6_cidr_blocks"]
     }
   }
+  tags = {project=var.project}
 }
 
 resource "aws_security_group" "ec2" {
@@ -92,4 +94,5 @@ resource "aws_security_group" "ec2" {
       ipv6_cidr_blocks = egress.value["ipv6_cidr_blocks"]
     }
   }
+  tags = {project=var.project}
 }

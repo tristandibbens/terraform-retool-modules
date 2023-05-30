@@ -1,6 +1,7 @@
 resource "aws_db_subnet_group" "db_subnet_sg" {
   name       = "${var.deployment_name}-db_subnet_sg"
   subnet_ids = var.subnet_ids
+  tags = {project=var.project}
 }
 
 resource "aws_db_instance" "this" {
@@ -23,4 +24,5 @@ resource "aws_db_instance" "this" {
   skip_final_snapshot          = true
   apply_immediately            = true
   deletion_protection          = true
+  tags = {project=var.project}
 }

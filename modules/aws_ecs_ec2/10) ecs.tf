@@ -81,6 +81,12 @@ resource "aws_autoscaling_group" "this" {
   }
 
   tag {
+    key                 = "project"
+    value               = var.project
+    propagate_at_launch = true
+  }
+
+  tag {
     key                 = "Cluster"
     value               = "${var.deployment_name}-ecs"
     propagate_at_launch = true
@@ -129,6 +135,7 @@ resource "aws_ecs_capacity_provider" "this" {
 resource "aws_cloudwatch_log_group" "this" {
   name              = "${var.deployment_name}-ecs-log-group"
   retention_in_days = var.log_retention_in_days
+  tags = {project=var.project}
 }
 
 resource "aws_ecs_service" "retool" {
@@ -145,6 +152,7 @@ resource "aws_ecs_service" "retool" {
     container_name   = "retool"
     container_port   = 3000
   }
+  tags = {project=var.project}
 }
 
 resource "aws_ecs_service" "jobs_runner" {
@@ -152,7 +160,9 @@ resource "aws_ecs_service" "jobs_runner" {
   cluster         = aws_ecs_cluster.this.id
   desired_count   = 1
   task_definition = aws_ecs_task_definition.retool_jobs_runner.arn
+  tags = {project=var.project}
 }
+
 resource "aws_ecs_task_definition" "retool_jobs_runner" {
   family        = "retool"
   task_role_arn = aws_iam_role.task_role.arn

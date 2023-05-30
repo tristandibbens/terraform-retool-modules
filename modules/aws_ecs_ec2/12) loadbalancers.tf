@@ -4,6 +4,7 @@ resource "aws_lb" "this" {
 
   security_groups = [aws_security_group.alb.id]
   subnets         = var.lb_subnet_ids
+  tags = {project=var.project}
 }
 
 resource "aws_lb_listener" "this" {
@@ -16,6 +17,7 @@ resource "aws_lb_listener" "this" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.this.arn
   }
+  tags = {project=var.project}
 }
 
 resource "aws_lb_listener" "http" {
@@ -31,6 +33,7 @@ resource "aws_lb_listener" "http" {
       status_code = "HTTP_301"
     }
   }
+  tags = {project=var.project}
 }
 
 resource "aws_lb_listener_rule" "this" {
@@ -47,6 +50,7 @@ resource "aws_lb_listener_rule" "this" {
       values = ["/"]
     }
   }
+  tags = {project=var.project}
 }
 
 resource "aws_lb_target_group" "this" {
@@ -64,4 +68,5 @@ resource "aws_lb_target_group" "this" {
     unhealthy_threshold = 2
     matcher             = "200,302" #responses checked
   }
+  tags = {project=var.project}
 }
