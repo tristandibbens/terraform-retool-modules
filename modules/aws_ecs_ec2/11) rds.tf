@@ -31,10 +31,6 @@ resource "aws_db_instance" "this" {
   # enable Multi-AZ deployment
   multi_az = true
 
-  # enable Enhanced Monitoring
-  monitoring_interval = 60 # this will set Enhanced Monitoring with granularity of 60 seconds
-  monitoring_role_name    = "${var.deployment_name}-rds-monitoring-role"
-
   # enable Storage Autoscaling
   max_allocated_storage = 200 # set the max storage threshold, it will automatically increase storage when necessary
   
