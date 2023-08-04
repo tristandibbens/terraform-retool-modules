@@ -25,4 +25,7 @@ resource "aws_db_instance" "this" {
   apply_immediately            = true
   deletion_protection          = true
   tags = {project=var.project}
+
+  snapshot_identifier = var.rds_existing_snapshot #default is null so this only works if a snapshot id is passed.
+  
 }

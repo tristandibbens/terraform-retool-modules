@@ -69,7 +69,7 @@ variable "retool_license_key" {
 variable "ecs_retool_image" {
   type        = string
   description = "Container image for desired Retool version. Defaults to `2.96.2`"
-  default     = "tryretool/backend:2.96.2"
+  default     = "tryretool/backend:2.105.1"
 }
 
 variable "ecs_task_cpu" {
@@ -124,6 +124,12 @@ variable "rds_performance_insights_retention_period" {
   type        = number
   default     = 14
   description = "The time in days to retain Performance Insights for RDS. Defaults to 14."
+}
+
+variable "rds_existing_snapshot" {
+  type        = string
+  description = "An existing snapshot id, that if passed will allow the rds instance to be spun up from an existing snapshot"
+  default     = null
 }
 
 variable "log_retention_in_days" {
