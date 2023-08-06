@@ -37,7 +37,7 @@ resource "aws_launch_configuration" "this" {
   user_data = <<-EOF
   #!/bin/bash
   echo ECS_CLUSTER=${var.deployment_name}-ecs >> /etc/ecs/ecs.config
-  eco ECS_ENABLE_SPOT_INSTANCE_DRAINING=true
+  echo ECS_ENABLE_SPOT_INSTANCE_DRAINING=true
   EOF
 
   # We’ll see security groups later
