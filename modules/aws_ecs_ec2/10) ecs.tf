@@ -57,9 +57,9 @@ resource "aws_launch_template" "this" {
   EOF
   )
 
-  vpc_security_group_ids = [
-    aws_security_group.ec2.id
-  ]
+  # vpc_security_group_ids = [
+  #   aws_security_group.ec2.id
+  # ]
 
   iam_instance_profile {
     arn = aws_iam_instance_profile.ec2.arn
@@ -68,6 +68,7 @@ resource "aws_launch_template" "this" {
   # Enable if you want the instances to be associated with public IP
   network_interfaces {
     associate_public_ip_address = false
+    security_groups = [aws_security_group.ec2.id]
   }
 
   lifecycle {
