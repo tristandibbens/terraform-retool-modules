@@ -274,10 +274,3 @@ resource "aws_ecs_task_definition" "retool" {
     ]
   )
 }
-
-#Log the user data for deployments
-resource "aws_cloudwatch_log_group" "user_data_logs" {
-  name              = "${var.deployment_name}-user-data-log-group"
-  retention_in_days = var.log_retention_in_days
-  tags              = { project = var.project }
-}
