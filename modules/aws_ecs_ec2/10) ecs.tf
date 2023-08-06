@@ -1,3 +1,7 @@
+data "aws_ssm_parameter" "ecs_optimized_ami" {
+  name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id"
+}
+
 resource "aws_ecs_cluster" "this" {
   name = "${var.deployment_name}-ecs"
 
@@ -7,25 +11,9 @@ resource "aws_ecs_cluster" "this" {
   }
 }
 
-data "aws_ami" "this" {
-  most_recent = true # get the latest version
-  name_regex = "^amzn2-ami-ecs-hvm-\\d\\.\\d\\.\\d{8}-x86_64-ebs$"
-
-  filter {
-    name = "virtualization-type"
-    values = [
-      "hvm"
-    ]
-  }
-
-  owners = [
-    "amazon" # only official images
-  ]
-}
-
 resource "aws_launch_configuration" "this" {
   name_prefix   = "${var.deployment_name}-ecs-launch-configuration-"
-  image_id      = data.aws_ami.this.id
+  image_id      = data.aws_ssm_parameter.ecs_optimized_ami.value
   instance_type = var.instance_type # e.g. t2.medium
   spot_price    = var.spot_required_cost
   enable_monitoring           = true
