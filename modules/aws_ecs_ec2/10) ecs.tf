@@ -11,18 +11,36 @@ resource "aws_ecs_cluster" "this" {
   }
 }
 
-resource "aws_launch_configuration" "this" {
-  name_prefix   = "${var.deployment_name}-ecs-launch-configuration-"
+resource "aws_launch_template" "this" {
+  name_prefix   = "${var.deployment_name}-ecs-launch-template-"
   image_id      = data.aws_ssm_parameter.ecs_optimized_ami.value
-  instance_type = var.instance_type # e.g. t2.medium
-  spot_price    = var.spot_required_cost
-  enable_monitoring           = true
-  associate_public_ip_address = false
+  instance_type = var.instance_type
+  key_name      = var.ssh_key_name
 
-  # This user data represents a collection of “scripts” that will be executed the first time the machine starts.
-  # This specific example makes sure the EC2 instance is automatically attached to the ECS cluster that we create earlier
-  # and marks the instance as purchased through the Spot pricing
-  user_data = <<-EOF
+  block_device_mappings {
+    # Specify block device mappings if needed. Example for root:
+    device_name = "/dev/xvda"
+    ebs {
+      volume_size = 30  # For example
+      volume_type = "gp2"
+    }
+  }
+
+  # If you're using spot instances
+  instance_market_options {
+    market_type = "spot"
+
+    spot_options {
+      max_price          = var.spot_required_cost
+      spot_instance_type = "persistent"
+    }
+  }
+
+  monitoring {
+    enabled = true
+  }
+
+  user_data = base64encode(<<-EOF
     #!/bin/bash
     exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
     
@@ -37,26 +55,26 @@ resource "aws_launch_configuration" "this" {
     aws logs create-log-stream --log-group-name ${var.deployment_name}-user-data-log-group --log-stream-name $(hostname)-user-data
     aws logs put-log-events --log-group-name ${var.deployment_name}-user-data-log-group --log-stream-name $(hostname)-user-data --log-events timestamp=$(date +%s%N | cut -b1-13),message="$(cat /var/log/user-data.log)"
   EOF
+  )
 
-
-  # We’ll see security groups later
-  security_groups = [
+  vpc_security_group_ids = [
     aws_security_group.ec2.id
   ]
 
-  # If you want to SSH into the instance and manage it directly:
-  # 1. Make sure this key exists in the AWS EC2 dashboard
-  # 2. Make sure your local SSH agent has it loaded
-  # 3. Make sure the EC2 instances are launched within a public subnet (are accessible from the internet)
-  key_name = var.ssh_key_name
+  iam_instance_profile {
+    arn = aws_iam_instance_profile.ec2.arn
+  }
 
-  # Allow the EC2 instances to access AWS resources on your behalf, using this instance profile and the permissions defined there
-  iam_instance_profile = aws_iam_instance_profile.ec2.arn
-  
+  # Enable if you want the instances to be associated with public IP
+  network_interfaces {
+    associate_public_ip_address = false
+  }
+
   lifecycle {
     create_before_destroy = true
   }
 }
+
 
 resource "aws_autoscaling_group" "this" {
   name                 = "${var.deployment_name}-autoscaling-group"
@@ -64,7 +82,11 @@ resource "aws_autoscaling_group" "this" {
   min_size             = var.min_instance_count
   desired_capacity     = var.min_instance_count
   vpc_zone_identifier  = var.subnet_ids
-  launch_configuration = aws_launch_configuration.this.name
+
+  launch_template {
+      id      = aws_launch_template.this.id
+      version = "$Latest"
+    }
 
   default_cooldown          = 30
   health_check_grace_period = 30
