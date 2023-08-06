@@ -61,11 +61,11 @@ resource "aws_iam_role" "ec2" {
   name               = "${var.deployment_name}-ec2-iam-role"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_policy.json
   path               = "/"
+}
 
-  inline_policy {
-    name   = "${var.deployment_name}-ec2-policy"
-    policy = data.aws_iam_policy_document.ec2_policy.json
-  }
+resource "aws_iam_role_policy_attachment" "ecs_ec2_attachment" {
+  role       = aws_iam_role.ec2.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
 data "aws_iam_policy_document" "ec2_assume_policy" {
@@ -78,29 +78,3 @@ data "aws_iam_policy_document" "ec2_assume_policy" {
     }
   }
 }
-
-data "aws_iam_policy_document" "ec2_policy" {
-  statement {
-    actions = [
-      "ec2:DescribeTags",
-      "ecs:CreateCluster",
-      "ecs:DeregisterContainerInstance",
-      "ecs:DiscoverPollEndpoint",
-      "ecs:Poll",
-      "ecs:RegisterContainerInstance",
-      "ecs:StartTelemetrySession",
-      "ecs:UpdateContainerInstancesState",
-      "ecs:Submit*",
-      "ecr:GetAuthorizationToken",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "logs:DescribeLogStreams"
-    ]
-    resources = ["*"]
-  }
-}
-
