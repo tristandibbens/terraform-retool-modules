@@ -66,6 +66,12 @@ variable "retool_license_key" {
   default     = "EXPIRED-LICENSE-KEY-TRIAL"
 }
 
+variable "associate_public_ip_address" {
+  type        = bool
+  description = "if we want to ssh on and have public access this requires setting to true"
+  default     = false
+}
+
 variable "ecs_retool_image" {
   type        = string
   description = "Container image for desired Retool version. Defaults to `2.96.2`"

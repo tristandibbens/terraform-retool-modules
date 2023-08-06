@@ -67,7 +67,7 @@ resource "aws_launch_template" "this" {
 
   # Enable if you want the instances to be associated with public IP
   network_interfaces {
-    associate_public_ip_address = false
+    associate_public_ip_address = var.associate_public_ip_address
     security_groups = [aws_security_group.ec2.id]
   }
 
