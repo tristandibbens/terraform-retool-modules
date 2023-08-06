@@ -35,10 +35,21 @@ resource "aws_launch_configuration" "this" {
   # This specific example makes sure the EC2 instance is automatically attached to the ECS cluster that we create earlier
   # and marks the instance as purchased through the Spot pricing
   user_data = <<-EOF
-  #!/bin/bash
-  echo ECS_CLUSTER=${var.deployment_name}-ecs >> /etc/ecs/ecs.config
-  echo ECS_ENABLE_SPOT_INSTANCE_DRAINING=true
+    #!/bin/bash
+    exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+    
+    # Ensure AWS CLI is available
+    yum install -y aws-cli
+    
+    # Your commands
+    echo ECS_CLUSTER=${var.deployment_name}-ecs >> /etc/ecs/ecs.config
+    echo ECS_ENABLE_SPOT_INSTANCE_DRAINING=true
+
+    # Send logs to CloudWatch
+    aws logs create-log-stream --log-group-name ${var.deployment_name}-user-data-log-group --log-stream-name $(hostname)-user-data
+    aws logs put-log-events --log-group-name ${var.deployment_name}-user-data-log-group --log-stream-name $(hostname)-user-data --log-events timestamp=$(date +%s%N | cut -b1-13),message="$(cat /var/log/user-data.log)"
   EOF
+
 
   # We’ll see security groups later
   security_groups = [
@@ -256,4 +267,11 @@ resource "aws_ecs_task_definition" "retool" {
       }
     ]
   )
+}
+
+#Log the user data for deployments
+resource "aws_cloudwatch_log_group" "user_data_logs" {
+  name              = "${var.deployment_name}-user-data-log-group"
+  retention_in_days = var.log_retention_in_days
+  tags              = { project = var.project }
 }
