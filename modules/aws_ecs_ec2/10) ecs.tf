@@ -1,3 +1,6 @@
+### Requires instances to be able to access the internet to pull down docker!
+
+
 #generic parameter getting us the latest AWS ecs optimized ami
 data "aws_ssm_parameter" "ecs_optimized_ami" {
   name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id"
@@ -43,18 +46,9 @@ resource "aws_launch_template" "this" {
 
   user_data = base64encode(<<-EOF
     #!/bin/bash
-    exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-    
-    # Ensure AWS CLI is available
-    yum install -y aws-cli
-    
     # Your commands
     echo ECS_CLUSTER=${var.deployment_name}-ecs >> /etc/ecs/ecs.config
     echo ECS_ENABLE_SPOT_INSTANCE_DRAINING=true
-
-    # Send logs to CloudWatch
-    aws logs create-log-stream --log-group-name ${var.deployment_name}-user-data-log-group --log-stream-name $(hostname)-user-data
-    aws logs put-log-events --log-group-name ${var.deployment_name}-user-data-log-group --log-stream-name $(hostname)-user-data --log-events timestamp=$(date +%s%N | cut -b1-13),message="$(cat /var/log/user-data.log)"
   EOF
   )
 
