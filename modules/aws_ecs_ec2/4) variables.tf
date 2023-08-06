@@ -15,12 +15,17 @@ variable "vpc_id" {
   description = "Select a VPC that allows instances access to the Internet."
 }
 
-variable "subnet_ids" {
+variable "db_subnet_ids" {
   type        = list(string)
   description = "Select at two subnets in your selected VPC."
 }
 
 variable "lb_subnet_ids" {
+  type        = list(string)
+  description = "Select at two subnets in your selected VPC for the load balancer"
+}
+
+variable "ecs_subnet_ids" {
   type        = list(string)
   description = "Select at two subnets in your selected VPC for the load balancer"
 }

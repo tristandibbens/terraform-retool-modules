@@ -1,6 +1,6 @@
 resource "aws_db_subnet_group" "db_subnet_sg" {
   name       = "${var.deployment_name}-db_subnet_sg"
-  subnet_ids = var.subnet_ids
+  subnet_ids = var.db_subnet_ids
   tags = {project=var.project}
 }
 

@@ -1,3 +1,4 @@
+#generic parameter getting us the latest AWS ecs optimized ami
 data "aws_ssm_parameter" "ecs_optimized_ami" {
   name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id"
 }
@@ -82,7 +83,7 @@ resource "aws_autoscaling_group" "this" {
   max_size             = var.max_instance_count
   min_size             = var.min_instance_count
   desired_capacity     = var.min_instance_count
-  vpc_zone_identifier  = var.subnet_ids
+  vpc_zone_identifier  = var.ecs_subnet_ids
 
   launch_template {
       id      = aws_launch_template.this.id
