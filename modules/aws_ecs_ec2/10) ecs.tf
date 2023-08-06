@@ -32,7 +32,7 @@ resource "aws_launch_template" "this" {
 
     spot_options {
       max_price          = var.spot_required_cost
-      spot_instance_type = "persistent"
+      spot_instance_type = "one-time"
     }
   }
 
