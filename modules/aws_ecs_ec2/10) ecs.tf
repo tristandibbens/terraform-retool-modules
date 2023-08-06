@@ -25,7 +25,7 @@ resource "aws_launch_template" "this" {
     # Specify block device mappings if needed. Example for root:
     device_name = "/dev/xvda"
     ebs {
-      volume_size = 30  # For example
+      volume_size = 60  # For example
       volume_type = "gp2"
     }
   }
