@@ -114,6 +114,12 @@ variable "rds_publicly_accessible" {
   description = "Whether the RDS instance should be publicly accessible. Defaults to false."
 }
 
+variable "rds_storage_encrypted" {
+  type        = bool
+  default     = true
+  description = "Storage encryption desired or not"
+}
+
 variable "rds_performance_insights_enabled" {
   type        = bool
   default     = true

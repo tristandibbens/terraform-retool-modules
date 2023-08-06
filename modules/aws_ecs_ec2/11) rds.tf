@@ -18,7 +18,7 @@ resource "aws_db_instance" "this" {
   db_subnet_group_name         = aws_db_subnet_group.db_subnet_sg.name
   vpc_security_group_ids       = [aws_security_group.rds.id]
   performance_insights_enabled = var.rds_performance_insights_enabled
-  storage_encrypted            = true
+  storage_encrypted            = var.rds_storage_encrypted
   backup_retention_period      = var.rds_backup_period
 
   skip_final_snapshot          = false
