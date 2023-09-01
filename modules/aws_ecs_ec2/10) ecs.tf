@@ -30,8 +30,8 @@ resource "aws_launch_template" "this" {
     }
   }
 
-  dynamic "instance_market_options" {
-    count = var.use_spot_instances ? 1 : 0
+ dynamic "instance_market_options" {
+    for_each = var.use_spot_instances ? [1] : []
     content {
       market_type = "spot"
 
@@ -41,7 +41,7 @@ resource "aws_launch_template" "this" {
       }
     }
   }
-  
+
   monitoring {
     enabled = true
   }
