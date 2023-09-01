@@ -64,7 +64,7 @@ resource "aws_launch_template" "this" {
 variable "instance_types" {
   description = "List of instance types for mixed instance policy"
   type        = list(string)
-  default     = ["m6a.large", "m5.large", "m4.large"]
+  default     = ["m6i.large","m6a.large", "m5.large"]
 }
 
 resource "aws_autoscaling_group" "this" {
