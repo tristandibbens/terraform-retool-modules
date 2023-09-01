@@ -41,18 +41,6 @@ variable "instance_type" {
   default     = "t3.medium"
 }
 
-variable "use_spot_instances" {
-  description = "Whether to use Spot instances. Defaults to false (on-demand)."
-  type        = bool
-  default     = false
-}
-
-variable "spot_required_cost" {
-  type        = number
-  description = "ECS spot cluster instance price required."
-  default     = 0.03
-}
-
 variable "max_instance_count" {
   type        = number
   description = "Max number of EC2 instances. Defaults to 4."
@@ -61,8 +49,8 @@ variable "max_instance_count" {
 
 variable "min_instance_count" {
   type        = number
-  description = "Min/desired number of EC2 instances. Defaults to 2."
-  default     = 2
+  description = "Min/desired number of EC2 instances. Defaults to 1."
+  default     = 1
 }
 
 variable "deployment_name" {
