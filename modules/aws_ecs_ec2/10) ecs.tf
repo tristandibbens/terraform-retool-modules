@@ -241,9 +241,6 @@ resource "aws_ecs_task_definition" "retool_jobs_runner" {
       }
     ]
   )
-  placement_constraints {
-  type       = "distinctInstance"
-}
 }
 
 resource "aws_ecs_task_definition" "retool" {
@@ -294,10 +291,6 @@ resource "aws_ecs_task_definition" "retool" {
       }
     ]
   )
-  placement_constraints {
-  type       = "distinctInstance"
-}
-
 }
 
 # Auto Scaling for retool service
