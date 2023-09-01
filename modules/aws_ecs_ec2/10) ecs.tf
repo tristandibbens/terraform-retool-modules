@@ -73,7 +73,6 @@ resource "aws_launch_template" "this" {
   }
 }
 
-
 resource "aws_autoscaling_group" "this" {
   name                 = "${var.deployment_name}-autoscaling-group"
   max_size             = var.max_instance_count
@@ -81,10 +80,29 @@ resource "aws_autoscaling_group" "this" {
   desired_capacity     = var.min_instance_count
   vpc_zone_identifier  = var.ecs_subnet_ids
 
-  launch_template {
-      id      = aws_launch_template.this.id
-      version = "$Latest"
+  mixed_instances_policy {
+    launch_template {
+      launch_template_specification {
+        launch_template_id = aws_launch_template.this.id
+        version            = "$Latest"
+      }
+
+      override {
+        instance_type = "m6a.large"
+      }
+
+      override {
+        instance_type = "t4.large"
+      }
+
     }
+
+    instances_distribution {
+      on_demand_base_capacity                  = 1
+      on_demand_percentage_above_base_capacity = 0
+      spot_allocation_strategy                 = "capacity-optimized"
+    }
+  }
 
   default_cooldown          = 30
   health_check_grace_period = 30
@@ -122,11 +140,9 @@ resource "aws_autoscaling_group" "this" {
   }
 }
 
-# Attach an autoscaling policy to the spot cluster to target 70% MemoryReservation on the ECS cluster.
 resource "aws_autoscaling_policy" "this" {
   name                   = "${var.deployment_name}-ecs-scale-policy"
   policy_type            = "TargetTrackingScaling"
-  #adjustment_type        = "ChangeInCapacity"
   autoscaling_group_name = aws_autoscaling_group.this.name
 
   target_tracking_configuration {
@@ -275,4 +291,52 @@ resource "aws_ecs_task_definition" "retool" {
       }
     ]
   )
+}
+
+# Auto Scaling for retool service
+resource "aws_appautoscaling_target" "retool" {
+  max_capacity       = 10  # You can adjust these values
+  min_capacity       = 1
+  resource_id        = "service/${aws_ecs_cluster.this.name}/${aws_ecs_service.retool.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
+
+resource "aws_appautoscaling_policy" "retool_cpu" {
+  name               = "retool-cpu-scaling-policy"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.retool.resource_id
+  scalable_dimension = aws_appautoscaling_target.retool.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.retool.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+    target_value = 70  # Scale when average CPU breaches 70%
+  }
+}
+
+# Auto Scaling for jobs_runner service
+resource "aws_appautoscaling_target" "jobs_runner" {
+  max_capacity       = 10  # You can adjust these values
+  min_capacity       = 1
+  resource_id        = "service/${aws_ecs_cluster.this.name}/${aws_ecs_service.jobs_runner.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
+
+resource "aws_appautoscaling_policy" "jobs_runner_cpu" {
+  name               = "jobs-runner-cpu-scaling-policy"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.jobs_runner.resource_id
+  scalable_dimension = aws_appautoscaling_target.jobs_runner.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.jobs_runner.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+    target_value = 70  # Scale when average CPU breaches 70%
+  }
 }
