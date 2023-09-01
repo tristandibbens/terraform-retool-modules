@@ -30,18 +30,6 @@ resource "aws_launch_template" "this" {
     }
   }
 
- dynamic "instance_market_options" {
-    for_each = var.use_spot_instances ? [1] : []
-    content {
-      market_type = "spot"
-
-      spot_options {
-        max_price          = var.spot_required_cost
-        spot_instance_type = "persistent"
-      }
-    }
-  }
-
   monitoring {
     enabled = true
   }
