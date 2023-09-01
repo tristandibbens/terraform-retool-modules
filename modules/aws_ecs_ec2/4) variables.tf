@@ -49,8 +49,8 @@ variable "max_instance_count" {
 
 variable "min_instance_count" {
   type        = number
-  description = "Min/desired number of EC2 instances. Defaults to 1."
-  default     = 1
+  description = "Min/desired number of EC2 instances. Defaults to 2."
+  default     = 2
 }
 
 variable "deployment_name" {
