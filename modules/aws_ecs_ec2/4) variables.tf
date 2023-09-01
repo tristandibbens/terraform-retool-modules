@@ -41,6 +41,12 @@ variable "instance_type" {
   default     = "t3.medium"
 }
 
+variable "use_spot_instances" {
+  description = "Whether to use Spot instances. Defaults to false (on-demand)."
+  type        = bool
+  default     = false
+}
+
 variable "spot_required_cost" {
   type        = number
   description = "ECS spot cluster instance price required."
