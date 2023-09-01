@@ -185,6 +185,11 @@ resource "aws_ecs_service" "retool" {
     container_name   = "retool"
     container_port   = 3000
   }
+
+  placement_strategy {
+  type = "distinctInstance"
+  }
+
   tags = {project=var.project}
 }
 
@@ -194,6 +199,11 @@ resource "aws_ecs_service" "jobs_runner" {
   desired_count   = 1
   task_definition = aws_ecs_task_definition.retool_jobs_runner.arn
   tags = {project=var.project}
+
+  placement_strategy {
+  type = "distinctInstance"
+  }
+
 }
 
 resource "aws_ecs_task_definition" "retool_jobs_runner" {
