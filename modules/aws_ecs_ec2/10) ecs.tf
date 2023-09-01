@@ -73,6 +73,12 @@ resource "aws_launch_template" "this" {
   }
 }
 
+variable "instance_types" {
+  description = "List of instance types for mixed instance policy"
+  type        = list(string)
+  default     = ["m6a.large", "m5.large", "t4.large"]
+}
+
 resource "aws_autoscaling_group" "this" {
   name                 = "${var.deployment_name}-autoscaling-group"
   max_size             = var.max_instance_count
@@ -81,26 +87,29 @@ resource "aws_autoscaling_group" "this" {
   vpc_zone_identifier  = var.ecs_subnet_ids
 
   mixed_instances_policy {
+    instances_distribution {
+      on_demand_base_capacity                  = 1
+      on_demand_percentage_above_base_capacity = 0
+      spot_allocation_strategy                 = "capacity-optimized"
+    }
+
     launch_template {
       launch_template_specification {
         launch_template_id = aws_launch_template.this.id
         version            = "$Latest"
       }
-
       override {
-        instance_type = "m6a.large"
+        instance_type = var.instance_types[0]
       }
 
       override {
-        instance_type = "t4.large"
+        instance_type = var.instance_types[1]
       }
 
-    }
+      override {
+        instance_type = var.instance_types[2]
+      }
 
-    instances_distribution {
-      on_demand_base_capacity                  = 1
-      on_demand_percentage_above_base_capacity = 0
-      spot_allocation_strategy                 = "capacity-optimized"
     }
   }
 
