@@ -42,3 +42,8 @@ output "aws_security_group_ec2_id" {
   value       = aws_security_group.ec2.id
   description = "EC2 security group"
 }
+
+output "ec2_role_arn" {
+  value       = aws_iam_role.ec2.arn
+  description = "EC2 runtime role to append permissions to"
+}
