@@ -43,7 +43,7 @@ output "aws_security_group_ec2_id" {
   description = "EC2 security group"
 }
 
-output "ec2_role" {
-  value       = aws_iam_role.ec2
-  description = "EC2 runtime role to append permissions to"
+output "ecs_task_role" {
+  value       = aws_iam_role.task_role
+  description = "ECS runtime role to append permissions to"
 }
