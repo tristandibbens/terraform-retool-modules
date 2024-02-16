@@ -66,7 +66,7 @@ resource "aws_security_group" "ec2" {
   ingress {
     description = "alb inbound only"
     from_port   = "0"
-    to_port     = " 65535"
+    to_port     = "65535"
     protocol    = "tcp"
     security_groups = [aws_security_group.alb.id]
   }
