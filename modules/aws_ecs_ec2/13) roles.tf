@@ -13,6 +13,7 @@ resource "aws_iam_role" "task_role" {
   name               = "${var.deployment_name}-task-role"
   assume_role_policy = data.aws_iam_policy_document.task_role_assume_policy.json
   path               = "/"
+  tags = var.tags
 }
 
 data "aws_iam_policy_document" "service_role_assume_policy" {
@@ -50,6 +51,7 @@ resource "aws_iam_role" "service_role" {
     name   = "${var.deployment_name}-service-policy"
     policy = data.aws_iam_policy_document.service_role_policy.json
   }
+  tags = var.tags
 }
 
 resource "aws_iam_instance_profile" "ec2" {
@@ -61,6 +63,7 @@ resource "aws_iam_role" "ec2" {
   name               = "${var.deployment_name}-ec2-iam-role"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_policy.json
   path               = "/"
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_ec2_attachment" {
