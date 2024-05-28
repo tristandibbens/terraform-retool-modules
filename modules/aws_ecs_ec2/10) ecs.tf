@@ -117,7 +117,7 @@ resource "aws_autoscaling_group" "this" {
 
   tag {
     key                 = "project"
-    value               = var.project
+    value               = var.tags
     propagate_at_launch = true
   }
 
