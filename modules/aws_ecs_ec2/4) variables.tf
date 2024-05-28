@@ -292,7 +292,6 @@ variable "rds_backup_period" {
 }
 
 variable "tags" {
-  type        = list(map(string))
+  type        = map(string)
   description = "Tags variable for use in services for cost reasons etc"
-  default     = []
 }
