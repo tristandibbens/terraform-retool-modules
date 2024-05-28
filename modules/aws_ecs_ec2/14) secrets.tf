@@ -7,7 +7,7 @@ resource "aws_secretsmanager_secret" "rds_password" {
   name        = "${var.deployment_name}-rds-password"
   description = "This is the password for the Retool RDS instance"
   recovery_window_in_days = 0
-  tags = {project=var.project}
+  tags = var.tags
 }
 
 resource "aws_secretsmanager_secret_version" "rds_password" {
@@ -19,7 +19,7 @@ resource "aws_secretsmanager_secret" "rds_username" {
   name        = "${var.deployment_name}-rds-username"
   description = "This is the username for the Retool RDS instance"
   recovery_window_in_days = 0
-  tags = {project=var.project}
+  tags = var.tags
 }
 
 resource "aws_secretsmanager_secret_version" "rds_username" {
@@ -36,7 +36,7 @@ resource "aws_secretsmanager_secret" "jwt_secret" {
   name        = "${var.deployment_name}-jwt-secret"
   description = "This is the secret for Retool JWTs"
   recovery_window_in_days = 0
-  tags = {project=var.project}
+  tags = var.tags
 }
 
 resource "aws_secretsmanager_secret_version" "jwt_secret" {
@@ -54,7 +54,7 @@ resource "aws_secretsmanager_secret" "encryption_key" {
   name        = "${var.deployment_name}-encryption-key"
   description = "This is the secret for encrypting credentials"
   recovery_window_in_days = 0
-  tags = {project=var.project}
+  tags = var.tags
 }
 
 resource "aws_secretsmanager_secret_version" "encryption_key" {

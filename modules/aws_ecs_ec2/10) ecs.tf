@@ -168,7 +168,7 @@ resource "aws_ecs_capacity_provider" "this" {
 resource "aws_cloudwatch_log_group" "this" {
   name              = "${var.deployment_name}-ecs-log-group"
   retention_in_days = var.log_retention_in_days
-  tags = {project=var.project}
+  tags = var.tags
 }
 
 resource "aws_ecs_service" "retool" {
@@ -186,7 +186,7 @@ resource "aws_ecs_service" "retool" {
     container_port   = 3000
   }
 
-  tags = {project=var.project}
+  tags = var.tags
 }
 
 resource "aws_ecs_service" "jobs_runner" {
@@ -194,7 +194,7 @@ resource "aws_ecs_service" "jobs_runner" {
   cluster         = aws_ecs_cluster.this.id
   desired_count   = 1
   task_definition = aws_ecs_task_definition.retool_jobs_runner.arn
-  tags = {project=var.project}
+  tags = var.tags
 }
 
 resource "aws_ecs_task_definition" "retool_jobs_runner" {

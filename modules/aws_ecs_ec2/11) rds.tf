@@ -1,7 +1,7 @@
 resource "aws_db_subnet_group" "db_subnet_sg" {
   name       = "${var.deployment_name}-db_subnet_sg"
   subnet_ids = var.db_subnet_ids
-  tags = {project=var.project}
+  tags = var.tags
 }
 
 resource "aws_db_instance" "this" {
@@ -24,7 +24,7 @@ resource "aws_db_instance" "this" {
   skip_final_snapshot          = false
   apply_immediately            = true
   deletion_protection          = true
-  tags = {project=var.project}
+  tags = var.tags
 
   snapshot_identifier = var.rds_existing_snapshot #default is null so this only works if a snapshot id is passed.
 

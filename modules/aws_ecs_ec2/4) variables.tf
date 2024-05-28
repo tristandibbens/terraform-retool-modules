@@ -291,8 +291,8 @@ variable "rds_backup_period" {
   default     = 0
 }
 
-variable "project" {
-  type        = string
-  description = "Allows the passing in of a project variable, used in tags"
-  default     = "Unknown"
+variable "tags" {
+  type        = list
+  description = "Tags variable for use in services for cost reasons etc"
+  default     = []
 }
