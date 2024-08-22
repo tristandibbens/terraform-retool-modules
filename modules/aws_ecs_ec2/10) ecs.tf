@@ -298,7 +298,7 @@ resource "aws_ecs_task_definition" "retool" {
 
 # Auto Scaling for retool service
 resource "aws_appautoscaling_target" "retool" {
-  max_capacity       = 10  # You can adjust these values
+  max_capacity       = 1  # You can adjust these values
   min_capacity       = 1
   resource_id        = "service/${aws_ecs_cluster.this.name}/${aws_ecs_service.retool.name}"
   scalable_dimension = "ecs:service:DesiredCount"
@@ -322,7 +322,7 @@ resource "aws_appautoscaling_policy" "retool_cpu" {
 
 # Auto Scaling for jobs_runner service
 resource "aws_appautoscaling_target" "jobs_runner" {
-  max_capacity       = 10  # You can adjust these values
+  max_capacity       = 1  # You can adjust these values
   min_capacity       = 1
   resource_id        = "service/${aws_ecs_cluster.this.name}/${aws_ecs_service.jobs_runner.name}"
   scalable_dimension = "ecs:service:DesiredCount"

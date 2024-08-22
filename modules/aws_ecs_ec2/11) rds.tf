@@ -14,6 +14,7 @@ resource "aws_db_instance" "this" {
   username                     = aws_secretsmanager_secret_version.rds_username.secret_string
   password                     = aws_secretsmanager_secret_version.rds_password.secret_string
   port                         = 5432
+  ca_cert_identifier           = var.rds_certificate
   publicly_accessible          = var.rds_publicly_accessible
   db_subnet_group_name         = aws_db_subnet_group.db_subnet_sg.name
   vpc_security_group_ids       = [aws_security_group.rds.id]

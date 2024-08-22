@@ -125,6 +125,11 @@ variable "rds_storage_encrypted" {
   description = "Storage encryption desired or not"
 }
 
+variable "rds_certificate" {
+  type        = string
+  description = "This is the TLS certificate and required to run the module"
+}
+
 variable "rds_performance_insights_enabled" {
   type        = bool
   default     = true
@@ -163,7 +168,7 @@ variable "cookie_insecure" {
 
 variable "maximum_percent" {
   type        = number
-  default     = 250
+  default     = 100
   description = "Maximum percentage of tasks to run during a deployment. Defaults to 250."
 }
 
